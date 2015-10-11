@@ -47,6 +47,7 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 public class CulturalHalloweenStructures
 {
+	private static World world;
 	private static final String __OBFID = "CL_00000516";
 
     public static void registerVillagePieces()
@@ -234,18 +235,21 @@ public class CulturalHalloweenStructures
 
             if (village != null)
             {
-                int i1 = (village.getBoundingBox().minX + village.getBoundingBox().maxX) / 2;
-                int j1 = (village.getBoundingBox().minZ + village.getBoundingBox().maxZ) / 2;
-                int k1 = village.getBoundingBox().maxX - village.getBoundingBox().minX;
-                int l1 = village.getBoundingBox().maxZ - village.getBoundingBox().minZ;
-                int i2 = k1 > l1 ? k1 : l1;
+            	p_176066_1_.add(village);
+                p_176066_0_.field_74932_i.add(village);
+                return village;
+                //int i1 = (village.getBoundingBox().minX + village.getBoundingBox().maxX) / 2;
+                //int j1 = (village.getBoundingBox().minZ + village.getBoundingBox().maxZ) / 2;
+                //int k1 = village.getBoundingBox().maxX - village.getBoundingBox().minX;
+                //int l1 = village.getBoundingBox().maxZ - village.getBoundingBox().minZ;
+                //int i2 = k1 > l1 ? k1 : l1;
 
-                if (p_176066_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
-                {
-                    p_176066_1_.add(village);
-                    p_176066_0_.field_74932_i.add(village);
-                    return village;
-                }
+                //if (p_176066_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
+                //{
+                //    p_176066_1_.add(village);
+                //    p_176066_0_.field_74932_i.add(village);
+                //    return village;
+                //}
             }
 
             return null;
@@ -275,12 +279,19 @@ public class CulturalHalloweenStructures
                 int l1 = path.getBoundingBox().maxZ - path.getBoundingBox().minZ;
                 int i2 = k1 > l1 ? k1 : l1;
 
-                if (p_176069_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
+                BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(i1 * 16 + 8, 0, j1 * 16 + 8));
+                if (biome == BiomeGenBase.plains)
                 {
-                    p_176069_1_.add(path);
-                    p_176069_0_.field_74930_j.add(path);
-                    return path;
+                	p_176069_1_.add(path);
+                	p_176069_0_.field_74930_j.add(path);
+                	return path;
                 }
+                //if (p_176069_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
+                //{
+                //    p_176069_1_.add(path);
+                //    p_176069_0_.field_74930_j.add(path);
+                //    return path;
+                //}
             }
 
             return null;

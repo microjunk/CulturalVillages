@@ -5,7 +5,8 @@ import java.util.logging.Logger;
 import culturalvillages.mapgen.MapGenCulturalVillages;
 import culturalvillages.pieces.CulturalHalloweenStructures;
 import culturalvillages.pieces.CulturalIndianStructures;
-import culturalvillages.pieces.CulturalSwampStructures;
+import culturalvillages.pieces.CulturalJungleStructures;
+import culturalvillages.pieces.CulturalOldWestStructures;
 import culturalvillages.pieces.CulturalVanillaStructures;
 import culturalvillages.pieces.CulturalVikingStructures;
 import culturalvillages.proxy.ServerProxy;
@@ -35,7 +36,7 @@ public class CulturalVillages
     public static final String MODID = "culturalvillages";
     public static final String NAME = "CulturalVillages";
     public static final String VERSION = "v.0.1.0";
-    
+    //Test Seed 7208794910977586159
     @Mod.Instance(CulturalVillages.MODID)
     public static CulturalVillages instance;
     
@@ -87,11 +88,12 @@ public class CulturalVillages
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	CulturalVanillaStructures.registerVillagePieces();
-    	CulturalSwampStructures.registerVillagePieces();
-    	CulturalVikingStructures.registerVillagePieces();
+    	//CulturalVanillaStructures.registerVillagePieces();
+    	//CulturalJungleStructures.registerVillagePieces();
+    	//CulturalVikingStructures.registerVillagePieces();
     	CulturalHalloweenStructures.registerVillagePieces();
     	CulturalIndianStructures.registerVillagePieces();
+    	//CulturalOldWestStructures.registerVillagePieces();
 				
     	MapGenStructureIO.registerStructure(MapGenCulturalVillages.Start.class, CulturalVillages.MODID + ".Village"); 
     	

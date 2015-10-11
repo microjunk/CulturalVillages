@@ -250,7 +250,7 @@ public class CulturalVanillaStructures
         else if (Math.abs(p_176066_3_ - p_176066_0_.getBoundingBox().minX) <= 112 && Math.abs(p_176066_5_ - p_176066_0_.getBoundingBox().minZ) <= 112)
         {
             CulturalVanillaStructures.Village village = func_176067_c(p_176066_0_, p_176066_1_, p_176066_2_, p_176066_3_, p_176066_4_, p_176066_5_, p_176066_6_, p_176066_7_ + 1);
-
+            
             if (village != null)
             {
                 int i1 = (village.getBoundingBox().minX + village.getBoundingBox().maxX) / 2;

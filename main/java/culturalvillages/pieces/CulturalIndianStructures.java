@@ -10,6 +10,7 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 
 import culturalvillages.mapgen.MapGenCulturalVillages;
+import culturalvillages.utils.VillageBiomes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockFurnace;
@@ -48,6 +49,7 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 public class CulturalIndianStructures
 {
 	private static final String __OBFID = "CL_00000516";
+	private static World world;
 
     public static void registerVillagePieces()
     {
@@ -225,21 +227,26 @@ public class CulturalIndianStructures
         else if (Math.abs(p_176066_3_ - p_176066_0_.getBoundingBox().minX) <= 112 && Math.abs(p_176066_5_ - p_176066_0_.getBoundingBox().minZ) <= 112)
         {
             CulturalIndianStructures.Village village = func_176067_c(p_176066_0_, p_176066_1_, p_176066_2_, p_176066_3_, p_176066_4_, p_176066_5_, p_176066_6_, p_176066_7_ + 1);
-
+            
             if (village != null)
             {
-                int i1 = (village.getBoundingBox().minX + village.getBoundingBox().maxX) / 2;
-                int j1 = (village.getBoundingBox().minZ + village.getBoundingBox().maxZ) / 2;
-                int k1 = village.getBoundingBox().maxX - village.getBoundingBox().minX;
-                int l1 = village.getBoundingBox().maxZ - village.getBoundingBox().minZ;
-                int i2 = k1 > l1 ? k1 : l1;
-
-                if (p_176066_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
-                {
-                    p_176066_1_.add(village);
-                    p_176066_0_.field_74932_i.add(village);
-                    return village;
-                }
+            	p_176066_1_.add(village);
+                p_176066_0_.field_74932_i.add(village);
+                return village;
+                //int i1 = (village.getBoundingBox().minX + village.getBoundingBox().maxX) / 2;
+                //int j1 = (village.getBoundingBox().minZ + village.getBoundingBox().maxZ) / 2;
+                //int k1 = village.getBoundingBox().maxX - village.getBoundingBox().minX;
+                //int l1 = village.getBoundingBox().maxZ - village.getBoundingBox().minZ;
+                //int i2 = k1 > l1 ? k1 : l1;
+                
+                //BiomeGenBase biomegenbase = world.getBiomeGenForCoords(new BlockPos(i1 * 16 + 8, 0, j1 * 16 + 8));
+                
+                //if (p_176066_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
+                //{
+                //    p_176066_1_.add(village);
+                //    p_176066_0_.field_74932_i.add(village);
+                //    return village;
+                //}
             }
 
             return null;
@@ -268,13 +275,20 @@ public class CulturalIndianStructures
                 int k1 = path.getBoundingBox().maxX - path.getBoundingBox().minX;
                 int l1 = path.getBoundingBox().maxZ - path.getBoundingBox().minZ;
                 int i2 = k1 > l1 ? k1 : l1;
-
-                if (p_176069_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
+                
+                BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(i1 * 16 + 8, 0, j1 * 16 + 8));
+                if (biome == BiomeGenBase.mesa)
                 {
-                    p_176069_1_.add(path);
-                    p_176069_0_.field_74930_j.add(path);
-                    return path;
+                	p_176069_1_.add(path);
+                	p_176069_0_.field_74930_j.add(path);
+                	return path;
                 }
+                //if (p_176069_0_.getWorldChunkManager().areBiomesViable(i1, j1, i2 / 2 + 4, MapGenCulturalVillages.villageSpawnBiomes))
+                //{
+                //    p_176069_1_.add(path);
+                //    p_176069_0_.field_74930_j.add(path);
+                //    return path;
+                //}
             }
 
             return null;

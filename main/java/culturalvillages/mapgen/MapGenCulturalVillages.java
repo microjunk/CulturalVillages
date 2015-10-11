@@ -7,9 +7,17 @@ import java.util.Map;
 import java.util.Random;
 
 import culturalvillages.CulturalVillages;
+import culturalvillages.pieces.CulturalHalloweenStructures;
 import culturalvillages.pieces.CulturalIndianStructures;
+import culturalvillages.pieces.CulturalOldWestStructures;
+import culturalvillages.pieces.CulturalVanillaStructures;
+import culturalvillages.pieces.CulturalVikingStructures;
+import culturalvillages.utils.VillageBiomes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.gen.structure.ComponentScatteredFeaturePieces;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
@@ -17,7 +25,7 @@ import net.minecraft.world.gen.structure.StructureStart;
 public class MapGenCulturalVillages extends MapGenVillage
 {
 	/** A list of all the biomes villages can spawn in. */
-	public static List biomelist = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.plains, BiomeGenBase.desert, BiomeGenBase.savanna});
+	public static List biomelist = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.plains, BiomeGenBase.mesa, BiomeGenBase.taiga});
 	
 	/** World terrain type, 0 for normal, 1 for flat map */
 	private int terrainType;
@@ -34,21 +42,6 @@ public class MapGenCulturalVillages extends MapGenVillage
     public MapGenCulturalVillages(Map p_i2093_1_)
     {
         this();
-        /*Iterator iterator = p_i2093_1_.entrySet().iterator();
-
-        while (iterator.hasNext())
-        {
-            Entry entry = (Entry)iterator.next();
-
-            if (((String)entry.getKey()).equals("size"))
-            {
-                this.terrainType = MathHelper.parseIntWithDefaultAndMax((String)entry.getValue(), this.terrainType, 0);
-            }
-            else if (((String)entry.getKey()).equals("distance"))
-            {
-                this.field_82665_g = MathHelper.parseIntWithDefaultAndMax((String)entry.getValue(), this.field_82665_g, this.field_82666_h + 1);
-            }
-        }*/
     }
 
     public String getStructureName()
@@ -81,11 +74,23 @@ public class MapGenCulturalVillages extends MapGenVillage
 
         if (k == i1 && l == j1)
         {
-        	boolean flag = this.worldObj.getWorldChunkManager().areBiomesViable(k * 16 + 8, l * 16 + 8, 0, biomelist);
+        	BiomeGenBase biomegenbase = this.worldObj.getWorldChunkManager().getBiomeGenerator(new BlockPos(k * 16 + 8, 0, l * 16 + 8));
 
-            if (flag)
+            if (biomegenbase == null)
             {
-                return true;
+                return false;
+            }
+
+            Iterator iterator = biomelist.iterator();
+
+            while (iterator.hasNext())
+            {
+                BiomeGenBase biomegenbase1 = (BiomeGenBase)iterator.next();
+
+                if (biomegenbase == biomegenbase1)
+                {
+                    return true;
+                }
             }
         }
 
@@ -108,46 +113,33 @@ public class MapGenCulturalVillages extends MapGenVillage
         public Start(World worldIn, Random p_i2092_2_, int p_i2092_3_, int p_i2092_4_, int p_i2092_5_)
         {
             super(p_i2092_3_, p_i2092_4_);
-            List list = CulturalIndianStructures.getStructureVillageWeightedPieceList(p_i2092_2_, p_i2092_5_);
-            CulturalIndianStructures.Start start = new CulturalIndianStructures.Start(worldIn.getWorldChunkManager(), 0, p_i2092_2_, (p_i2092_3_ << 4) + 2, (p_i2092_4_ << 4) + 2, list, p_i2092_5_);
-            this.components.add(start);
-            start.buildComponent(start, this.components, p_i2092_2_);
-            List list1 = start.field_74930_j;
-            List list2 = start.field_74932_i;
-            int l;
+            BiomeGenBase biomegenbase = worldIn.getBiomeGenForCoords(new BlockPos(p_i2092_3_ * 16 + 8, 0, p_i2092_4_ * 16 + 8));
 
-            while (!list1.isEmpty() || !list2.isEmpty())
+            if (biomegenbase != BiomeGenBase.jungle && biomegenbase != BiomeGenBase.jungleHills)
             {
-                StructureComponent structurecomponent;
-
-                if (list1.isEmpty())
+                if (biomegenbase == BiomeGenBase.mesa)
                 {
-                    l = p_i2092_2_.nextInt(list2.size());
-                    structurecomponent = (StructureComponent)list2.remove(l);
-                    structurecomponent.buildComponent(start, this.components, p_i2092_2_);
+                	List list = CulturalIndianStructures.getStructureVillageWeightedPieceList(p_i2092_2_, p_i2092_5_);
+                	CulturalIndianStructures.Start start = new CulturalIndianStructures.Start(worldIn.getWorldChunkManager(), 0, p_i2092_2_, (p_i2092_3_ << 4) + 2, (p_i2092_4_ << 4) + 2, list, p_i2092_5_);
+                    this.components.add(start);
+                    
                 }
-                else
+                else if (biomegenbase == BiomeGenBase.plains)
                 {
-                    l = p_i2092_2_.nextInt(list1.size());
-                    structurecomponent = (StructureComponent)list1.remove(l);
-                    structurecomponent.buildComponent(start, this.components, p_i2092_2_);
+                	List list = CulturalHalloweenStructures.getStructureVillageWeightedPieceList(p_i2092_2_, p_i2092_5_);
+                	CulturalHalloweenStructures.Start start = new CulturalHalloweenStructures.Start(worldIn.getWorldChunkManager(), 0, p_i2092_2_, (p_i2092_3_ << 4) + 2, (p_i2092_4_ << 4) + 2, list, p_i2092_5_);
+                    this.components.add(start);
                 }
+            }
+            else
+            {
+            	List list = CulturalHalloweenStructures.getStructureVillageWeightedPieceList(p_i2092_2_, p_i2092_5_);
+            	CulturalHalloweenStructures.Start start = new CulturalHalloweenStructures.Start(worldIn.getWorldChunkManager(), 0, p_i2092_2_, (p_i2092_3_ << 4) + 2, (p_i2092_4_ << 4) + 2, list, p_i2092_5_);
+                this.components.add(start);
+                //start.buildComponent(start, this.components, p_i2092_2_);
             }
 
             this.updateBoundingBox();
-            l = 0;
-            Iterator iterator = this.components.iterator();
-
-            while (iterator.hasNext())
-            {
-                StructureComponent structurecomponent1 = (StructureComponent)iterator.next();
-
-                if (!(structurecomponent1 instanceof CulturalIndianStructures.Road))
-                {
-                    ++l;
-                }
-            }
-            this.hasMoreThanTwoComponents = l > 2;
         }
     }
 }
